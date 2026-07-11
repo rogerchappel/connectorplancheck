@@ -1,0 +1,7 @@
+{
+  "dryRun": false,
+  "approval": { "status": "granted" },
+  "target": { "connector": "crm" },
+  "actions": [ { "type": "update-contact" } ],
+  "api_key": "secret:example"
+}
