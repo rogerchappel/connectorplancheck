@@ -1,0 +1,10 @@
+{
+  "dryRun": true,
+  "approval": { "status": "pending" },
+  "target": { "connector": "slack", "accountId": "default" },
+  "actions": [
+    { "type": "send-message", "destination": "U123", "idempotencyKey": "demo-001" }
+  ],
+  "data": { "classification": "internal" },
+  "rollback": { "notes": "No live message will be sent during dry-run review." }
+}
