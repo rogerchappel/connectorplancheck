@@ -9,6 +9,9 @@ export async function run(argv) {
   if (!file || file === '--help' || file === '-h') {
     return { code: 0, output: 'Usage: connectorplancheck <plan.json> [--format markdown|json] [--out file]\n' };
   }
+  if (file === '--version' || file === '-v') {
+    return { code: 0, output: '0.1.0\n' };
+  }
   const formatIndex = args.indexOf('--format');
   const format = formatIndex >= 0 ? args[formatIndex + 1] : 'markdown';
   const outIndex = args.indexOf('--out');

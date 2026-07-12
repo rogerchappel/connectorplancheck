@@ -8,8 +8,22 @@
     "test": "node --test",
     "check": "node scripts/check.js",
     "build": "node scripts/build.js",
-    "smoke": "node bin/connectorplancheck.js fixtures/safe-plan.json --format markdown --out tmp/smoke.md && test -s tmp/smoke.md"
+    "smoke": "node bin/connectorplancheck.js --help && node bin/connectorplancheck.js --version && node bin/connectorplancheck.js fixtures/safe-plan.json --format markdown --out tmp/smoke.md && test -s tmp/smoke.md",
+    "package:smoke": "npm pack --dry-run",
+    "release:check": "npm run check && npm test && npm run build && npm run smoke && npm run package:smoke"
   },
+  "files": [
+    "bin",
+    "src",
+    "docs",
+    "fixtures",
+    "SKILL.md",
+    "README.md",
+    "LICENSE",
+    "SECURITY.md",
+    "CONTRIBUTING.md",
+    "CHANGELOG.md"
+  ],
   "keywords": ["agents", "connectors", "dry-run", "approval", "cli"],
   "author": "Roger Chappel",
   "license": "MIT",
