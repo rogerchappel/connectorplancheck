@@ -2,10 +2,14 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { loadPlan, validatePlan } from './validate.js';
 import { toJson, toMarkdown } from './report.js';
+import pkg from '../package.json' with { type: 'json' };
 
 export async function run(argv) {
   const args = [...argv];
   const file = args.shift();
+  if (file === '--version' || file === '-v') {
+    return { code: 0, output: `${pkg.version}\n` };
+  }
   if (!file || file === '--help' || file === '-h') {
     return { code: 0, output: 'Usage: connectorplancheck <plan.json> [--format markdown|json] [--out file]\n' };
   }
