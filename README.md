@@ -5,6 +5,17 @@
 ## Quickstart
 
 ```bash
+npm install -g connectorplancheck
+connectorplancheck --help
+connectorplancheck --version
+connectorplancheck ./plan.json --format markdown
+```
+
+For local development:
+
+```bash
+npm install
+npm run release:check
 npm test
 npm run smoke
 node bin/connectorplancheck.js fixtures/safe-plan.json --format markdown
