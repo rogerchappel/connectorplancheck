@@ -4,11 +4,23 @@
   "description": "Dry-run review gate for agent connector action plans.",
   "type": "module",
   "bin": { "connectorplancheck": "./bin/connectorplancheck.js" },
+  "files": [
+    "bin",
+    "src",
+    "dist",
+    "docs",
+    "fixtures",
+    "SKILL.md",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "test": "node --test",
     "check": "node scripts/check.js",
     "build": "node scripts/build.js",
-    "smoke": "node bin/connectorplancheck.js fixtures/safe-plan.json --format markdown --out tmp/smoke.md && test -s tmp/smoke.md"
+    "smoke": "node bin/connectorplancheck.js --help && node bin/connectorplancheck.js --version && node bin/connectorplancheck.js fixtures/safe-plan.json --format markdown --out tmp/smoke.md && test -s tmp/smoke.md",
+    "package:smoke": "node scripts/package-smoke.js",
+    "release:check": "npm run check && npm test && npm run build && npm run smoke && npm run package:smoke"
   },
   "keywords": ["agents", "connectors", "dry-run", "approval", "cli"],
   "author": "Roger Chappel",
