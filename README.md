@@ -15,6 +15,19 @@ node bin/connectorplancheck.js fixtures/safe-plan.json --format json --out tmp/r
 
 A useful plan declares `dryRun`, `approval.status`, `target.connector`, `target.accountId`, action `idempotencyKey` values, data classification, and rollback notes.
 
+## Verification
+
+Run the same checks used for release-readiness before publishing or opening a release PR:
+
+```bash
+npm run check
+npm test
+npm run build
+npm run smoke
+npm run release:check
+npm pack --dry-run
+```
+
 ## Safety Notes
 
 This tool never executes connector actions, reads credentials, sends messages, updates CRMs, or calls external APIs. It only reads local JSON and optionally writes a report.
