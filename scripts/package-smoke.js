@@ -22,6 +22,9 @@ const requiredFiles = [
   'SKILL.md',
   'README.md',
   'LICENSE',
+  'SECURITY.md',
+  'CONTRIBUTING.md',
+  'CHANGELOG.md',
   'package.json',
 ];
 const forbiddenFiles = [
