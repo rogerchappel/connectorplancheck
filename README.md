@@ -35,3 +35,7 @@ This tool never executes connector actions, reads credentials, sends messages, u
 ## Limitations
 
 V1 supports deterministic JSON plan checks. It does not replace human approval for external writes and does not infer hidden destination policy.
+
+## Release Notes
+
+See [CHANGELOG.md](CHANGELOG.md) for the current release-candidate notes and verification scope.
