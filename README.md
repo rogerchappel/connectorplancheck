@@ -11,6 +11,12 @@ node bin/connectorplancheck.js fixtures/safe-plan.json --format markdown
 node bin/connectorplancheck.js fixtures/safe-plan.json --format json --out tmp/report.json
 ```
 
+The CLI accepts one plan path, one optional `--format` value, and one optional
+`--out` path. Unknown options, missing option values, repeated options, and
+extra positional arguments are usage errors: the CLI prints an actionable
+message and usage summary to standard error, then exits with status 2. This
+prevents a misspelled JSON-output option from silently producing Markdown.
+
 ## Plan Shape
 
 A useful plan declares `dryRun`, `approval.status`, `target.connector`, `target.accountId`, action `idempotencyKey` values, data classification, and rollback notes.

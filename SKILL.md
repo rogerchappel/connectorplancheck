@@ -18,6 +18,10 @@ The CLI reads local plan files and optionally writes reports. It never executes 
 3. Fix failed checks or keep the action in dry-run mode.
 4. Use JSON output for CI or automated release gates.
 
+Treat exit status 2 as a command-usage failure. The CLI rejects unknown or
+repeated options, missing `--format` or `--out` values, and extra positional
+arguments instead of silently falling back to Markdown output.
+
 ## Verification
 
 Run `npm test`, `npm run check`, `npm run build`, and `npm run smoke`.
