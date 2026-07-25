@@ -7,5 +7,5 @@ All notable changes to `connectorplancheck` will be documented here.
 - Provides a local-only CLI for reviewing connector action plans before live execution.
 - Checks dry-run intent, approval status, connector target metadata, idempotency keys, data classification, and rollback notes.
 - Includes markdown and JSON report output for release review evidence.
+- Rejects ambiguous or malformed CLI arguments with actionable usage errors.
 - Adds package smoke coverage for the CLI entrypoint, validation code, fixtures, docs, skill file, README, and license.
-
