@@ -79,3 +79,18 @@ test('entrypoint rejects --out without a path with a nonzero exit', () => {
   assert.match(result.stderr, /Missing value for --out/);
   assert.match(result.stderr, usage);
 });
+
+test('entrypoint reports a null plan as blocked JSON', async (t) => {
+  const directory = await mkdtemp(join(tmpdir(), 'connectorplancheck-'));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const planPath = join(directory, 'null.json');
+  await import('node:fs/promises').then(({ writeFile }) => writeFile(planPath, 'null\n'));
+
+  const result = invoke([planPath, '--format', 'json']);
+
+  assert.equal(result.status, 1);
+  assert.equal(result.stderr, '');
+  const report = JSON.parse(result.stdout);
+  assert.equal(report.classification, 'blocked');
+  assert.ok(report.failed > 0);
+});
