@@ -19,7 +19,26 @@ prevents a misspelled JSON-output option from silently producing Markdown.
 
 ## Plan Shape
 
-A useful plan declares `dryRun`, `approval.status`, `target.connector`, `target.accountId`, action `idempotencyKey` values, data classification, and rollback notes.
+The plan root and nested records must be JSON objects. `dryRun` must be the
+boolean `true`; `approval.status` must be the string `"pending"` or
+`"not-requested"`; `target.connector`, `target.accountId`, every action
+`idempotencyKey`, and `rollback.notes` must be non-empty strings. `actions`
+must be a non-empty array of objects. `data.classification` must be the string
+`"public"`, `"internal"`, or `"sensitive"`.
+
+```json
+{
+  "dryRun": true,
+  "approval": { "status": "pending" },
+  "target": { "connector": "example", "accountId": "sandbox" },
+  "actions": [{ "idempotencyKey": "example-create-1" }],
+  "data": { "classification": "public" },
+  "rollback": { "notes": "Delete the dry-run artifact." }
+}
+```
+
+Malformed roots and required field types produce a deterministic blocked or
+review report; object and array values are not accepted in place of strings.
 
 ## Verification
 
