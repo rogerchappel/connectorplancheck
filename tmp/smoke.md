@@ -7,6 +7,7 @@ Warnings: 0
 
 | Status | Severity | Rule | Detail |
 |---|---|---|---|
+| pass | fail | plan-object | Plan root is a JSON object |
 | pass | fail | dry-run | Plan is explicitly dry-run |
 | pass | fail | approval | Approval is absent or pending, not assumed granted |
 | pass | fail | target | Connector target and account are named |
