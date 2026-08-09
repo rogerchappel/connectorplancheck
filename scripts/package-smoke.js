@@ -1,7 +1,13 @@
 #!/usr/bin/env node
 import { spawnSync } from 'node:child_process';
+import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
-const result = spawnSync('npm', ['pack', '--dry-run', '--json'], {
+const directory = mkdtempSync(join(tmpdir(), 'connectorplancheck-package-'));
+process.on('exit', () => rmSync(directory, { recursive: true, force: true }));
+
+const result = spawnSync('npm', ['pack', '--json', '--pack-destination', directory], {
   encoding: 'utf8',
   stdio: ['ignore', 'pipe', 'pipe'],
 });
@@ -41,4 +47,29 @@ if (missing.length > 0 || forbidden.length > 0) {
   process.exit(1);
 }
 
-console.log(`Package smoke passed with ${pack.files.length} files.`);
+const archive = join(directory, pack.filename);
+const install = join(directory, 'install');
+const installed = spawnSync('npm', [
+  'install', '--ignore-scripts', '--no-audit', '--no-fund', '--prefix', install, archive,
+], { encoding: 'utf8' });
+if (installed.status !== 0) {
+  process.stderr.write(installed.stderr);
+  process.exit(installed.status ?? 1);
+}
+
+const executable = join(install, 'node_modules', '.bin', 'connectorplancheck');
+const fixture = join(install, 'node_modules', 'connectorplancheck', 'fixtures', 'safe-plan.json');
+const expectedVersion = JSON.parse(readFileSync('package.json', 'utf8')).version;
+for (const [label, args, expected] of [
+  ['help', ['--help'], /Usage: connectorplancheck/],
+  ['version', ['--version'], new RegExp(`^${expectedVersion.replaceAll('.', '\\.') }\\n$`)],
+  ['plan validation', [fixture, '--format', 'json'], /"classification": "ready"/],
+]) {
+  const invocation = spawnSync(executable, args, { encoding: 'utf8' });
+  if (invocation.status !== 0 || !expected.test(invocation.stdout)) {
+    process.stderr.write(`Installed CLI ${label} smoke failed.\n${invocation.stderr}`);
+    process.exit(invocation.status ?? 1);
+  }
+}
+
+console.log(`Package smoke passed with ${pack.files.length} files and an installed CLI.`);
