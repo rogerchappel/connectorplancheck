@@ -53,6 +53,9 @@ npm run release:check
 npm pack --dry-run
 ```
 
+The package supports Node.js 18 and later. CI runs the complete release check,
+including an installed-package CLI smoke test, on Node.js 18, 20, 22, and 24.
+
 ## Safety Notes
 
 This tool never executes connector actions, reads credentials, sends messages, updates CRMs, or calls external APIs. It only reads local JSON and optionally writes a report.
