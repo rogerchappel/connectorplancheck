@@ -2,7 +2,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { loadPlan, validatePlan } from './validate.js';
 import { toJson, toMarkdown } from './report.js';
-import pkg from '../package.json' with { type: 'json' };
+import { packageVersion } from './package-version.js';
 
 const usage = 'Usage: connectorplancheck <plan.json> [--format markdown|json] [--out file]\n';
 
@@ -43,7 +43,7 @@ export async function run(argv) {
   const file = argv[0];
   if (file === '--version' || file === '-v') {
     if (argv.length > 1) throw argumentError(`Unexpected argument: ${argv[1]}`);
-    return { code: 0, output: `${pkg.version}\n` };
+    return { code: 0, output: `${packageVersion}\n` };
   }
   if (!file || file === '--help' || file === '-h') {
     if (argv.length > 1) throw argumentError(`Unexpected argument: ${argv[1]}`);
