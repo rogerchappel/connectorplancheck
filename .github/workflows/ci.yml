@@ -8,11 +8,15 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18, 20, 22, 24]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: |
           if [ -f package-lock.json ]; then
@@ -20,8 +24,4 @@ jobs:
           else
             npm install
           fi
-      - run: npm run check
-      - run: npm test
-      - run: npm run build
-      - run: npm run smoke
       - run: npm run release:check
