@@ -5,7 +5,7 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { run } from '../src/cli.js';
-import pkg from '../package.json' with { type: 'json' };
+import { packageVersion } from '../src/package-version.js';
 
 const fixture = 'fixtures/safe-plan.json';
 const usage = /Usage: connectorplancheck/;
@@ -20,7 +20,7 @@ function invoke(args) {
 test('keeps documented help and version flows compatible', async () => {
   assert.match((await run([])).output, usage);
   assert.match((await run(['--help'])).output, usage);
-  assert.equal((await run(['--version'])).output.trim(), pkg.version);
+  assert.equal((await run(['--version'])).output.trim(), packageVersion);
 });
 
 test('renders documented markdown and JSON commands', async () => {

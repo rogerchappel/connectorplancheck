@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { run } from '../src/cli.js';
-import pkg from '../package.json' with { type: 'json' };
+import { packageVersion } from '../src/package-version.js';
 import { toJson, toMarkdown } from '../src/report.js';
 
 const report = { source: 'plan.json', classification: 'ready', failed: 0, warnings: 0, results: [{ id: 'dry-run', label: 'Dry run', severity: 'fail', status: 'pass' }] };
@@ -18,5 +18,5 @@ test('renders markdown report', () => {
 test('prints package version for CLI smoke checks', async () => {
   const result = await run(['--version']);
   assert.equal(result.code, 0);
-  assert.equal(result.output.trim(), pkg.version);
+  assert.equal(result.output.trim(), packageVersion);
 });
