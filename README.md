@@ -53,8 +53,8 @@ npm run release:check
 npm pack --dry-run
 ```
 
-The package supports Node.js 18 and later. CI runs the complete release check,
-including an installed-package CLI smoke test, on Node.js 18, 20, 22, and 24.
+The package supports Node.js 22 and later. CI runs the complete release check,
+including an installed-package CLI smoke test, on Node.js 22, 24, and 26.
 
 ## Safety Notes
 
