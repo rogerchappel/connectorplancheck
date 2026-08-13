@@ -49,6 +49,18 @@ if (missing.length > 0 || forbidden.length > 0) {
 
 const archive = join(directory, pack.filename);
 const install = join(directory, 'install');
+const packageMetadata = JSON.parse(readFileSync('package.json', 'utf8'));
+const packedPackage = pack.files.find((file) => file.path === 'package.json');
+const packedReadme = pack.files.find((file) => file.path === 'README.md');
+if (packageMetadata.engines?.node !== '>=22') {
+  console.error(`Package smoke failed; expected engines.node to be >=22, got ${packageMetadata.engines?.node ?? 'undefined'}`);
+  process.exit(1);
+}
+if (!packedPackage || !packedReadme) {
+  console.error('Package smoke failed; package metadata or README is missing from the archive.');
+  process.exit(1);
+}
+
 const installed = spawnSync('npm', [
   'install', '--ignore-scripts', '--no-audit', '--no-fund', '--prefix', install, archive,
 ], { encoding: 'utf8' });
@@ -59,7 +71,19 @@ if (installed.status !== 0) {
 
 const executable = join(install, 'node_modules', '.bin', 'connectorplancheck');
 const fixture = join(install, 'node_modules', 'connectorplancheck', 'fixtures', 'safe-plan.json');
-const expectedVersion = JSON.parse(readFileSync('package.json', 'utf8')).version;
+const installedRoot = join(install, 'node_modules', 'connectorplancheck');
+const installedMetadata = JSON.parse(readFileSync(join(installedRoot, 'package.json'), 'utf8'));
+const installedReadme = readFileSync(join(installedRoot, 'README.md'), 'utf8');
+if (installedMetadata.engines?.node !== packageMetadata.engines.node) {
+  console.error('Package smoke failed; installed package has a different Node.js engine policy.');
+  process.exit(1);
+}
+if (!installedReadme.includes('Node.js 22 and later') || !installedReadme.includes('Node.js 22, 24, and 26')) {
+  console.error('Package smoke failed; README does not report the supported Node.js policy and CI majors.');
+  process.exit(1);
+}
+
+const expectedVersion = packageMetadata.version;
 for (const [label, args, expected] of [
   ['help', ['--help'], /Usage: connectorplancheck/],
   ['version', ['--version'], new RegExp(`^${expectedVersion.replaceAll('.', '\\.') }\\n$`)],
