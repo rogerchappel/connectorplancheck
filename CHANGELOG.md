@@ -10,4 +10,5 @@ All notable changes to `connectorplancheck` will be documented here.
 - Rejects ambiguous or malformed CLI arguments with actionable usage errors.
 - Adds package smoke coverage for the CLI entrypoint, validation code, fixtures, docs, skill file, README, and license.
 - Loads package metadata without experimental JSON modules on supported Node.js versions.
-- Verifies the installed CLI on Node.js 18, 20, 22, and 24 in CI.
+- Supports maintained Node.js releases starting with Node.js 22 and verifies the
+  installed CLI on Node.js 22, 24, and 26 in CI.
