@@ -7,7 +7,7 @@ Thanks for improving `connectorplancheck`.
 Run the release-candidate gate before opening a pull request:
 
 ```bash
-npm install
+npm ci
 npm run release:check
 ```
 
@@ -25,4 +25,3 @@ npm run package:smoke
 - Keep fixtures synthetic and minimal.
 - Prefer deterministic JSON examples that cover one approval or safety behavior at a time.
 - Do not commit real connector account IDs, credentials, customer payloads, or production rollback instructions.
-
